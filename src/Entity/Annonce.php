@@ -16,6 +16,12 @@ class Annonce
     #[ORM\Column(length: 255)]
     private ?string $company = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?User $User = null;
+
+    #[ORM\OneToOne(inversedBy: 'annonce', cascade: ['persist', 'remove'])]
+    private ?Categorie $category = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +35,30 @@ class Annonce
     public function setCompany(string $company): self
     {
         $this->company = $company;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->User;
+    }
+
+    public function setUser(?User $User): self
+    {
+        $this->User = $User;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Categorie
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Categorie $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

@@ -39,6 +39,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $phone = null;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Cv $cv = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -172,6 +175,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhone(int $phone): self
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getCv(): ?Cv
+    {
+        return $this->cv;
+    }
+
+    public function setCv(Cv $cv): self
+    {
+        // set the owning side of the relation if necessary
+        if ($cv->getUser() !== $this) {
+            $cv->setUser($this);
+        }
+
+        $this->cv = $cv;
 
         return $this;
     }
